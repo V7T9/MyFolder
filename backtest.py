@@ -6,15 +6,15 @@ import vectorbt as vbt
 
 
 SYMBOL = "BTCUSDT"
-LIMIT = 1000
+LIMIT = None
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
 FEES = 0.001       # 0.1%
 SLIPPAGE = 0.0005  # 0.05%
 
 
-def get_klines(interval, limit=1000):
-    """读取本地 data 目录中的 K 线 CSV 数据"""
+def get_klines(interval, limit=None):
+    """读取本地 data 目录中的 K 线 CSV 数据，默认使用全部数据"""
     csv_map = {
         "1h": os.path.join(DATA_DIR, "BTCUSDT_1h.csv"),
         "4h": os.path.join(DATA_DIR, "BTCUSDT_4h.csv"),
@@ -34,7 +34,8 @@ def get_klines(interval, limit=1000):
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
     df = df.sort_values("open_time").reset_index(drop=True)
-    df = df.head(limit).copy()
+    if limit is not None:
+        df = df.head(limit).copy()
     df = df.set_index("open_time")
     df.index.name = "time"
 
@@ -47,10 +48,10 @@ def main():
     # 1. 获取 Binance 原生 1H / 4H K线
     # ============================================================
 
-    print("正在获取 Binance 数据...")
+    print("正在加载本地 CSV 数据...")
 
-    df_1h = get_klines("1h", LIMIT)
-    df_4h = get_klines("4h", LIMIT)
+    df_1h = get_klines("1h")
+    df_4h = get_klines("4h")
 
     print()
     print("1H 数据：")

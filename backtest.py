@@ -44,10 +44,6 @@ def get_klines(interval, limit=None):
 
 def main():
 
-    # ============================================================
-    # 1. 获取 Binance 原生 1H / 4H K线
-    # ============================================================
-
     print("正在加载本地 CSV 数据...")
 
     df_1h = get_klines("1h")
@@ -134,7 +130,7 @@ def main():
     trend_4h_on_1h = (
         trend_4h
         .reindex(df_1h.index, method="ffill")
-        .shift(1)
+        .shift(3)
         .fillna(False)
         .astype(bool)
     )
@@ -143,7 +139,7 @@ def main():
     macd_4h_sell_on_1h = (
         macd_4h_sell
         .reindex(df_1h.index, method="ffill")
-        .shift(1)
+        .shift(3)
         .fillna(False)
         .astype(bool)
     )

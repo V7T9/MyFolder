@@ -12,7 +12,7 @@ OUTPUT_DIR = "data"
 BASE_URL = "https://api.binance.com/api/v3/klines"
 
 # 最近 3 个月
-DAYS = 90
+DAYS = 360
 
 # Binance 单次最多返回 1000 根
 LIMIT = 1000
